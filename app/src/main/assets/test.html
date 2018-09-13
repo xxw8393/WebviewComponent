@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebviewComponent</title>
+    <script type="text/javascript">
+        function JavaCallJS(message) {
+            alert(message);
+        }
+    </script>
+</head>
+
+<body>
+<button type="button" onClick="javascript:jsObj.JSCallJava('Message From JS By javascript')" >JS Call Java By javascript</button>
+<button type="button" onClick="window.jsObj.JSCallJava('Message From JS By window')" >JS Call Java By window</button>
+</body>
+</html>
