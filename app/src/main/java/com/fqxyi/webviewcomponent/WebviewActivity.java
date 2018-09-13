@@ -14,6 +14,8 @@ public class WebviewActivity extends AppCompatActivity {
 
     private WebView webView;
 
+    private String url;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,24 +24,30 @@ public class WebviewActivity extends AppCompatActivity {
     }
 
     private void init() {
+        if (getIntent() != null) {
+            url = getIntent().getStringExtra("url");
+        }
+
         webView = (WebView) findViewById(R.id.web_view);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/test.html");
+        webView.loadUrl(url);
         webView.addJavascriptInterface(WebviewActivity.this, "jsObj");
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                return super.onJsAlert(view, url, message, result);
+                Toast.makeText(WebviewActivity.this, message, Toast.LENGTH_SHORT).show();
+                result.confirm();
+                return true;
             }
         });
     }
 
     @JavascriptInterface
-    public void JSCallJava(String message) {
+    public void JsCallJava(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     public void JavaCallJs(View view) {
-        webView.loadUrl("javascript:JavaCallJS('Message From Java');");
+        webView.loadUrl("javascript:JavaCallJS({data: 'Message From Java'});");
     }
 }

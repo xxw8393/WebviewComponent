@@ -14,7 +14,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OpenWebview(View view) {
-        startActivity(new Intent(this, WebviewActivity.class));
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra("url", "file:///android_asset/test.html");
+        startActivity(intent);
     }
 
 }
