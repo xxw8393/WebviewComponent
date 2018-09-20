@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -16,6 +15,8 @@ public class WebviewActivity extends AppCompatActivity {
 
     private String url;
 
+    private JsCallJavaManager jsCallJavaManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,8 @@ public class WebviewActivity extends AppCompatActivity {
     }
 
     private void init() {
+        jsCallJavaManager = new JsCallJavaManager(getApplicationContext());
+
         if (getIntent() != null) {
             url = getIntent().getStringExtra("url");
         }
@@ -31,7 +34,7 @@ public class WebviewActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.web_view);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
-        webView.addJavascriptInterface(WebviewActivity.this, "jsObj");
+        webView.addJavascriptInterface(jsCallJavaManager, "jsObj");
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
@@ -42,12 +45,8 @@ public class WebviewActivity extends AppCompatActivity {
         });
     }
 
-    @JavascriptInterface
-    public void JsCallJava(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void JavaCallJs(View view) {
+        webView.loadUrl(JavaCallJsManager.getJson("JavaCallJs", "{data: 'Message From Java'}"));
     }
 
-    public void JavaCallJs(View view) {
-        webView.loadUrl("javascript:JavaCallJS({data: 'Message From Java'});");
-    }
 }

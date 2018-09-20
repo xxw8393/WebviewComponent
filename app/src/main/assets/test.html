@@ -2,15 +2,22 @@
 <html>
 <head>
     <title>WebviewComponent</title>
-    <script type="text/javascript">
-        function JavaCallJS(message) {
-            alert(JSON.stringify(message));
-        }
-    </script>
 </head>
 
 <body>
-<button type="button" onClick="javascript:jsObj.JsCallJava('Message From JS By javascript')" >JS Call Java By javascript</button>
-<button type="button" onClick="window.jsObj.JsCallJava('Message From JS By window')" >JS Call Java By window</button>
+<button type="button" onClick="javascript:jsObj.JsCallJava(getJson())" >JS Call Java By javascript</button>
+<button type="button" onClick="window.jsObj.JsCallJava(getMessage())" >JS Call Java By window</button>
 </body>
+
+<script type="text/javascript">
+function JavaCallJs(message) {
+    alert(JSON.stringify(message));
+}
+function getJson() {
+    return "{data: 'Message From Java'}"
+}
+function getMessage() {
+    return "Message From JS By window"
+}
+</script>
 </html>
