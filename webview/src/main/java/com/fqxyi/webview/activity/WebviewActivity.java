@@ -137,6 +137,17 @@ public class WebviewActivity extends AppCompatActivity implements WebviewBinderC
     }
 
     @Override
+    public void onBackPressed() {
+        if (webview != null) {
+            if (webview.canGoBack()) {
+                webview.goBack();
+            } else {
+                finish();
+            }
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (binderHelper != null) {

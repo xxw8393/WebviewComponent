@@ -7,6 +7,9 @@
             android:process=":webview" />
 
         <service android:name=".service.MainRemoteService" />
+        <service
+            android:name=".service.PreWebService"
+            android:process=":webview" />
     </application>
 
 </manifest>

@@ -1,8 +1,10 @@
 package com.fqxyi.webviewcomponent;
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.fqxyi.webview.js.JsBridge;
+import com.fqxyi.webview.service.PreWebService;
 import com.fqxyi.webview.utils.GlobalUtil;
 
 /**
@@ -17,6 +19,8 @@ public class BaseApplication extends Application {
         GlobalUtil.appContext = getApplicationContext();
 
         JsBridge.get().register(JsInterfaceImpl.class, "jsObj");
+        //进程预加载
+        startService(new Intent(this, PreWebService.class));
     }
 
 }
