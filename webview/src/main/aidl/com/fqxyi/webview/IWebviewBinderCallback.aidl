@@ -1,4 +1,4 @@
-package com.fqxyi.webviewcomponent;
+package com.fqxyi.webview;
 
 /**
  * 子进程

@@ -1,6 +1,6 @@
-package com.fqxyi.webviewcomponent;
+package com.fqxyi.webview;
 
-import com.fqxyi.webviewcomponent.IWebviewBinderCallback;
+import com.fqxyi.webview.IWebviewBinderCallback;
 
 /**
  * 主进程

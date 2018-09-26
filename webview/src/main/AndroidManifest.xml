@@ -1,2 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fqxyi.webview" />
+    package="com.fqxyi.webview">
+
+    <application>
+        <activity
+            android:name=".activity.WebviewActivity"
+            android:process=":webview" />
+
+        <service android:name=".service.MainRemoteService" />
+    </application>
+
+</manifest>

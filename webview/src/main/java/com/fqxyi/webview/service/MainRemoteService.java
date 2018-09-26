@@ -1,4 +1,4 @@
-package com.fqxyi.webviewcomponent;
+package com.fqxyi.webview.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+
+import com.fqxyi.webview.IWebviewBinder;
+import com.fqxyi.webview.IWebviewBinderCallback;
+import com.fqxyi.webview.js.JsBridge;
 
 /**
  * 主进程中的Service

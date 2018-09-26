@@ -3,11 +3,14 @@ package com.fqxyi.webviewcomponent;
 import android.os.RemoteException;
 import android.widget.Toast;
 
+import com.fqxyi.webview.IWebviewBinderCallback;
+import com.fqxyi.webview.utils.GlobalUtil;
+
 public class JsInterfaceImpl {
 
     public void testJson(String params, IWebviewBinderCallback callback) {
         //操作主进程UI
-        Toast.makeText(Utils.appContext, "processName = " + Utils.getCurrentProcessName() + ", params = " + params, Toast.LENGTH_SHORT).show();
+        Toast.makeText(GlobalUtil.appContext, "processName = " + GlobalUtil.getCurrentProcessName() + ", params = " + params, Toast.LENGTH_SHORT).show();
         //回调给子进程调用js
         if (callback != null) {
             try {
@@ -20,7 +23,7 @@ public class JsInterfaceImpl {
 
     public void testMessage(String params, IWebviewBinderCallback callback) {
         //操作主进程UI
-        Toast.makeText(Utils.appContext, "processName = " + Utils.getCurrentProcessName() + ", params = " + params, Toast.LENGTH_SHORT).show();
+        Toast.makeText(GlobalUtil.appContext, "processName = " + GlobalUtil.getCurrentProcessName() + ", params = " + params, Toast.LENGTH_SHORT).show();
         //回调给子进程调用js
         if (callback != null) {
             try {

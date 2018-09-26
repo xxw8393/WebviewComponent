@@ -2,6 +2,9 @@ package com.fqxyi.webviewcomponent;
 
 import android.app.Application;
 
+import com.fqxyi.webview.js.JsBridge;
+import com.fqxyi.webview.utils.GlobalUtil;
+
 /**
  * 注册统一实现类
  */
@@ -11,9 +14,9 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Utils.appContext = getApplicationContext();
+        GlobalUtil.appContext = getApplicationContext();
 
-        JsBridge.get().register(JsInterfaceImpl.class);
+        JsBridge.get().register(JsInterfaceImpl.class, "jsObj");
     }
 
 }

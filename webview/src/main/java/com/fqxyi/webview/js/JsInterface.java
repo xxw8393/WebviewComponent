@@ -1,4 +1,4 @@
-package com.fqxyi.webviewcomponent;
+package com.fqxyi.webview.js;
 
 import android.webkit.JavascriptInterface;
 

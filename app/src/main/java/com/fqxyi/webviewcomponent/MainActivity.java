@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.fqxyi.webview.activity.WebviewActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

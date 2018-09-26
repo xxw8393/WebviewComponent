@@ -1,17 +1,20 @@
-package com.fqxyi.webviewcomponent;
+package com.fqxyi.webview.js;
 
 import android.text.TextUtils;
 
-import android.util.Log;
+import com.fqxyi.webview.IWebviewBinderCallback;
+import com.fqxyi.webview.utils.LogUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
-  * 解析给web调用的接口类，根据web调用传过来的方法名、参数等信息，调用这里解析出来的方法
-  * 这种实现是为了不需要改动底层真正给web调用的接口{@link JsInterface}
-  * 只需要上层通过 JsBridge.get().register(JsInterfaceImpl.class)
-  */
+ *  * 解析给web调用的接口类，根据web调用传过来的方法名、参数等信息，调用这里解析出来的方法
+ *  * 这种实现是为了不需要改动底层真正给web调用的接口{@link JsInterface}
+ *  * 只需要上层通过 JsBridge.get().register(JsInterfaceImpl.class)
+ *  
+ */
 public class JsBridge {
 
     private static volatile JsBridge mInstance;
@@ -30,8 +33,10 @@ public class JsBridge {
         return mInstance;
     }
 
-    //
+    //clazz的实例
     private Object object;
+    //JS调用Java的方法名
+    private String name;
     //key：方法名 value：方法对象Method
     private static Map<String, Method> mMethodMp = new HashMap<>();
 
@@ -42,13 +47,14 @@ public class JsBridge {
      *
      * @param clazz 提供给h5调用的方法所在的类
      */
-    public void register(Class clazz) {
+    public void register(Class clazz, String name) {
         try {
-            mMethodMp.clear();
             this.object = clazz.newInstance();
+            this.name = name;
+            mMethodMp.clear();
             parseMethods(clazz);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.e(e);
         }
     }
 
@@ -59,7 +65,7 @@ public class JsBridge {
         appendMethodsToMap(methods2, mMethodMp);
     }
 
-    private void appendMethodsToMap(Method[] methods, Map<String, Method> mMethodsMap) {
+    private void appendMethodsToMap(Method[] methods, Map<String, Method> mMethodsMap) throws Exception {
         for (Method method : methods) {
             String name = method.getName();
             if (TextUtils.isEmpty(name)) {
@@ -84,14 +90,21 @@ public class JsBridge {
                 try {
                     method.invoke(object, params, callback);
                 } catch (Exception e) {
-                    Log.d("Webview", "执行异常，请检查传入参数是否有误！");
+                    LogUtil.e(e);
                 }
             } else {
-                Log.d("Webview", "Android侧没有定义该方法，请检查接口参数名称是否有误！");
+                LogUtil.e("WebviewComponent", "Android侧没有定义该方法，请检查接口参数名称是否有误！");
             }
         } else {
-            Log.d("Webview", "Android侧没有定义接口[" + methodName + "]，请检查接口参数名称是否有误！");
+            LogUtil.e("WebviewComponent", "Android侧没有定义接口[" + methodName + "]，请检查接口参数名称是否有误！");
         }
+    }
+
+    /**
+     * 获取JS调用Java的方法名
+     */
+    public String getName() {
+        return name;
     }
 
 }

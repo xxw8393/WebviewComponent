@@ -1,4 +1,4 @@
-package com.fqxyi.webviewcomponent;
+package com.fqxyi.webview.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -6,8 +6,11 @@ import android.content.Context;
 /**
  * 工具类
  */
-public class Utils {
+public class GlobalUtil {
 
+    /**
+     * 全局上下文
+     */
     public static Context appContext;
 
     /**
