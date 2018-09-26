@@ -1,4 +1,4 @@
-package com.fqxyi.webview.activity;
+package com.fqxyi.webview.setting;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -22,19 +22,25 @@ import com.fqxyi.webview.utils.GlobalUtil;
 public class CustomWebChromeClient extends WebChromeClient {
 
     private Activity activity;
+    private WebChromeClientCallback callback;
 
-    public CustomWebChromeClient(Activity activity) {
+    public CustomWebChromeClient(Activity activity, WebChromeClientCallback webChromeClientCallback) {
         this.activity = activity;
+        this.callback = webChromeClientCallback;
     }
 
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
-        super.onProgressChanged(view, newProgress);
+        if (callback != null) {
+            callback.onProgressChanged(view, newProgress);
+        }
     }
 
     @Override
     public void onReceivedTitle(WebView view, String title) {
-        super.onReceivedTitle(view, title);
+        if (callback != null) {
+            callback.onReceivedTitle(view, title);
+        }
     }
 
     @Override

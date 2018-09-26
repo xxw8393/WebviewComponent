@@ -10,16 +10,26 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.fqxyi.webview.R;
+import com.fqxyi.webview.binder.WebviewBinderCallback;
+import com.fqxyi.webview.binder.WebviewBinderHelper;
+import com.fqxyi.webview.setting.WebChromeClientCallback;
+import com.fqxyi.webview.setting.WebviewClientCallback;
+import com.fqxyi.webview.setting.WebviewSettingHelper;
+import com.fqxyi.webview.view.BaseWebview;
+import com.fqxyi.webview.view.WebviewTitleBar;
+import com.fqxyi.webview.view.WebviewTitleBarCallback;
 
 /**
  * 子进程中的Webview
  */
-public class WebviewActivity extends AppCompatActivity implements WebviewBinderCallback {
+public class WebviewActivity extends AppCompatActivity implements WebviewBinderCallback, WebChromeClientCallback, WebviewClientCallback {
 
     private final int CODE_CALL_JS = 1;
     private WebviewHandler handler;
+    //findView
+    private WebviewTitleBar bar;
+    private BaseWebview webview;
     //
-    private WebView webView;
     private String url;
     //
     private WebviewBinderHelper binderHelper;
@@ -34,17 +44,39 @@ public class WebviewActivity extends AppCompatActivity implements WebviewBinderC
 
     private void init() {
         findView();
+        initEvent();
         initData();
         handler = new WebviewHandler();
         binderHelper = new WebviewBinderHelper(this, this);
         binderHelper.initJsInterface();
         binderHelper.bindMainRemoteService(this);
         settingHelper = new WebviewSettingHelper(this);
-        settingHelper.initWebview(webView, binderHelper);
+        settingHelper.initWebview(webview, binderHelper, this, this);
     }
 
     private void findView() {
-        webView = (WebView) findViewById(R.id.web_view);
+        bar = (WebviewTitleBar) findViewById(R.id.bar);
+        webview = (BaseWebview) findViewById(R.id.webview);
+    }
+
+    private void initEvent() {
+        bar.setCallback(new WebviewTitleBarCallback() {
+            @Override
+            public void clickBarBack() {
+                if (webview != null) {
+                    if (webview.canGoBack()) {
+                        webview.goBack();
+                    } else {
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void clickBarClose() {
+                finish();
+            }
+        });
     }
 
     private void initData() {
@@ -52,13 +84,13 @@ public class WebviewActivity extends AppCompatActivity implements WebviewBinderC
     }
 
     public void JavaCallJs(View view) {
-        webView.loadUrl("javascript:alert('testJsonCallBack');");
+        webview.loadUrl("javascript:alert('testJsonCallBack');");
     }
 
     @Override
     public void onServiceConnected() {
-        if (webView != null) {
-            webView.loadUrl(url);
+        if (webview != null) {
+            webview.loadUrl(url);
         }
     }
 
@@ -73,14 +105,16 @@ public class WebviewActivity extends AppCompatActivity implements WebviewBinderC
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (binderHelper != null) {
-            binderHelper.destroyConnection();
+    public void onProgressChanged(WebView view, int newProgress) {
+        if (bar != null) {
+            bar.onProgressChanged(view, newProgress);
         }
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
-            handler = null;
+    }
+
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        if (bar != null) {
+            bar.onReceivedTitle(view, title);
         }
     }
 
@@ -92,14 +126,26 @@ public class WebviewActivity extends AppCompatActivity implements WebviewBinderC
                 case CODE_CALL_JS:
                     String params = (String) msg.obj;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        webView.evaluateJavascript(params, null);
+                        webview.evaluateJavascript(params, null);
                     } else {
-                        webView.loadUrl(params);
+                        webview.loadUrl(params);
                     }
                     break;
             }
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (binderHelper != null) {
+            binderHelper.destroyConnection();
+        }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+            handler = null;
+        }
     }
 
 }

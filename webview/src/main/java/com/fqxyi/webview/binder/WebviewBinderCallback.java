@@ -1,4 +1,4 @@
-package com.fqxyi.webview.activity;
+package com.fqxyi.webview.binder;
 
 public interface WebviewBinderCallback {
 

@@ -1,4 +1,4 @@
-package com.fqxyi.webview.activity;
+package com.fqxyi.webview.binder;
 
 import android.app.Activity;
 import android.content.ComponentName;

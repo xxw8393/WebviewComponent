@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,11 +11,16 @@
         android:onClick="JavaCallJs"
         android:text="Java Call JS"
         android:textColor="#000000"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
-    <WebView
-        android:id="@+id/web_view"
+    <com.fqxyi.webview.view.WebviewTitleBar
+        android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="48dp"/>
+
+    <com.fqxyi.webview.view.BaseWebview
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

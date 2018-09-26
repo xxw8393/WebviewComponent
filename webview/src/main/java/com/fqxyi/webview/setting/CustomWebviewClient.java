@@ -1,4 +1,4 @@
-package com.fqxyi.webview.activity;
+package com.fqxyi.webview.setting;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -20,9 +20,11 @@ import android.webkit.WebViewClient;
 public class CustomWebviewClient extends WebViewClient {
 
     private Activity activity;
+    private WebviewClientCallback callback;
 
-    public CustomWebviewClient(Activity activity) {
+    public CustomWebviewClient(Activity activity, WebviewClientCallback webviewClientCallback) {
         this.activity = activity;
+        this.callback = webviewClientCallback;
     }
 
     @Override
@@ -55,12 +57,18 @@ public class CustomWebviewClient extends WebViewClient {
         super.onPageCommitVisible(view, url);
     }
 
+    /**
+     * 从 API 11 引入，API 21 废弃
+     */
     @Nullable
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         return super.shouldInterceptRequest(view, url);
     }
 
+    /**
+     * 从 API 21 开始引入
+     */
     @Nullable
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
